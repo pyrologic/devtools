@@ -1,0 +1,20 @@
+{
+  "name": "@pyrologic/rollup-plugin",
+  "version": "1.0.0",
+  "description": "A simple yet useful rollup.js plugin",
+  "main": "pyrologic-rollup-plugin.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "pyrologic-rollup-plugin.js"
+  ],
+  "keywords": [
+    "rollup",
+    "rollup-plugin",
+    "plugin"
+  ],
+  "author": "Thomas Hendel",
+  "license": "MIT"
+}
