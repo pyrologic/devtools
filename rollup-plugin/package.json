@@ -1,8 +1,9 @@
 {
   "name": "@pyrologic/rollup-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple yet useful rollup.js plugin",
   "main": "dist/pyrologic-rollup-plugin.js",
+  "homepage": "https://github.com/pyrologic/devtools/tree/main/rollup-plugin",
   "type": "commonjs",
   "scripts": {
     "build": "rollup --config rollup.config.js",
