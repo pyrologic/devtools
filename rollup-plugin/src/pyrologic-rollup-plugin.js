@@ -1,4 +1,4 @@
-export default class PyrologicRollupPlugin {
+class PyrologicRollupPlugin {
 
     constructor() {
         this.wcount = 0;
@@ -72,3 +72,8 @@ export default class PyrologicRollupPlugin {
 }
 
 const singleton = new PyrologicRollupPlugin();
+
+// we use a >>> named <<< export - so import the plugin this way:
+//    import { PyrologicRollupPlugin } from "@pyrologic/rollup-plugin";
+
+export { PyrologicRollupPlugin };
