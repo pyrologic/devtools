@@ -20,6 +20,6 @@
   "author": "Thomas Hendel",
   "license": "MIT",
   "devDependencies": {
-    "rollup": "^2.75.5"
+    "rollup": "^2.79.1"
   }
 }
