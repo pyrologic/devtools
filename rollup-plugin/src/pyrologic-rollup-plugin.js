@@ -2,6 +2,7 @@ class PyrologicRollupPlugin {
 
     constructor() {
         this.wcount = 0;
+        this.filterCDWarning = false;
     }
 
     static getInstance() {
@@ -29,14 +30,16 @@ class PyrologicRollupPlugin {
             name = args.name;
         }
         if ( typeof name === 'string' && name.length > 0 ) {
-            console.log( `\n[${new Date().toLocaleString()}] New "${name}" build.\n`);
+            console.log(`\n[${new Date().toLocaleString()}] New "${name}" build.\n`);
         } else {
-            console.log( ( '\n[' + new Date().toLocaleString() + ']' ) + ' New rollup build.\n' );
+            console.log(('\n[' + new Date().toLocaleString() + ']') + ' New rollup build.\n' );
         }
         return null;
     }
 
-    infoPlugin() {
+    infoPlugin(options = {}) {
+        const opts = options || {};
+        this.filterCDWarning = !!opts.filterCDWarning;
         const self = this;
         return {
             name: 'pyrologic-info-plugin',
@@ -60,6 +63,14 @@ class PyrologicRollupPlugin {
     }
 
     onwarn ( { loc, frame, message } ) {
+        if ( this.filterCDWarning ) {
+            if ( typeof message === 'string' && message.length > 0 ) {
+                if ( message.includes('Circular') && message.includes('Dependency') ) {
+                    // ignore!
+                    return;
+                }
+            }
+        }
         if ( loc ) {
             console.warn(`#${++this.wcount}: ${loc.file} (${loc.line}:${loc.column}) ${message}`);
             if ( frame ) {
