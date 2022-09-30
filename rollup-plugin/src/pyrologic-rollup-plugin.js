@@ -65,7 +65,8 @@ class PyrologicRollupPlugin {
     onwarn ( { loc, frame, message } ) {
         if ( this.filterCDWarning ) {
             if ( typeof message === 'string' && message.length > 0 ) {
-                if ( message.includes('Circular') && message.includes('Dependency') ) {
+                const mup = message.toUpperCase();
+                if ( mup.includes('CIRCULAR') && message.includes('DEPENDENCY') ) {
                     // ignore!
                     return;
                 }
