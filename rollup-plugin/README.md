@@ -56,6 +56,8 @@ That's it!
 
 ## Advanced
 
+### Count and write warning messages
+
 The Pyrologic Rollup Plugin has a warning counter. You can forward any warning that rollup issues to the plugin.
 
 To do so, extend your rollup configuration like this:
@@ -77,3 +79,29 @@ const config = {
 
 This way, every warning is prefixed by a number.
 
+
+### Filter warning messages
+
+At some point rollup.js issues "Circular dependency" warnings, if two modules import each other for instance.
+Sometimes, this may indicate a serious error. But there are situations where these warnings are harmless yet
+unavoidable.
+
+You can instruct the Pyrologic Rollup Plugin to ignore "Circular dependency" warnings. In order to do so,
+just initialize the plugin with an object that has the property `filterCDWarning` set to `true`:
+
+```js
+const config = {
+    input: 'src/index.js',
+    output: {
+        // ... see above ...
+    },
+    plugins: [
+        plugin.timestampPlugin('My cool project'),
+        // pass an object with the property "filterCDWarning" set to true
+        plugin.infoPlugin( { filterCDWarning: true } )
+    ],
+    onwarn ( { loc, frame, message } ) {
+        plugin.onwarn( { loc, frame, message } );
+    }
+}
+```
