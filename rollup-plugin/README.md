@@ -79,7 +79,6 @@ const config = {
 
 This way, every warning is prefixed by a number.
 
-
 ### Filter warning messages
 
 At some point rollup.js issues "Circular dependency" warnings, if two modules import each other for instance.
@@ -105,3 +104,35 @@ const config = {
     }
 }
 ```
+
+### Verbose output
+
+To get more information about the build process you can instruct the Pyrologic Rollup Plugin to write a more
+verbose build summary. Ath the moment this is is the number of filtered out warning messages (see above).
+
+Just set the option `verboseOutput` to `true`:
+
+```js
+// ... see above ...
+    plugins: [
+        plugin.timestampPlugin('My cool project'),
+        // pass an object with the properties "verboseOutput" and "filterCDWarning" set to true
+        plugin.infoPlugin( { verboseOutput: true, filterCDWarning: true } )
+    ],
+// ... etc. ...
+```
+
+Note: If `filterCDWarning` is left at `false` then `verboseOutput` has no effect.
+
+
+### Summary of options
+
+The Pyrologic Rollup Plugin recognizes the following options:
+
+| Option name | Type | Default value | Description |
+| ------------| ---- | ------------- | ----------- |
+| verboseOutput | Boolean | `false` | If set to `true` then the plugin writes more information to the console. |
+| filterCDWarning | Boolean | `false` | If set to `true` then the plugin filters "Circular dependency" warnings. | 
+
+
+<sub>_End Of Document_</sub>
