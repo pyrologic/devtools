@@ -86,7 +86,14 @@ Sometimes, this may indicate a serious error. But there are situations where the
 unavoidable.
 
 You can instruct the Pyrologic Rollup Plugin to ignore "Circular dependency" warnings. In order to do so,
-just initialize the plugin with an object that has the property `filterCDWarning` set to `true`:
+just initialize the plugin with an object that has the property `filterCDWarning` set to `true`.
+
+If your project consumes other packages that were bundled by webpack or vite, then the bundled code may
+contain `/*#__PURE__*/` annotations that rollup may not be able to handle. In this case rollup will the issue a
+long warning. If your project is still successfully built, then you can suppress those warnings by setting the
+property `filterPureWarning` to `true`.
+
+Example:
 
 ```js
 const config = {
@@ -97,7 +104,7 @@ const config = {
     plugins: [
         plugin.timestampPlugin('My cool project'),
         // pass an object with the property "filterCDWarning" set to true
-        plugin.infoPlugin( { filterCDWarning: true } )
+        plugin.infoPlugin( { filterCDWarning: true, filterPureWarning: true } )
     ],
     onwarn ( { loc, frame, message } ) {
         plugin.onwarn( { loc, frame, message } );
@@ -117,12 +124,12 @@ Just set the option `verboseOutput` to `true`:
     plugins: [
         plugin.timestampPlugin('My cool project'),
         // pass an object with the properties "verboseOutput" and "filterCDWarning" set to true
-        plugin.infoPlugin( { verboseOutput: true, filterCDWarning: true } )
+        plugin.infoPlugin( { verboseOutput: true, filterCDWarning: true, filterPureWarning: false } )
     ],
 // ... etc. ...
 ```
 
-Note: If `filterCDWarning` is left at `false` then `verboseOutput` has no effect.
+Note: If both `filterCDWarning` and `filterPureWarning` are left at `false` then `verboseOutput` has no effect.
 
 
 ### Summary of options
@@ -133,6 +140,7 @@ The Pyrologic Rollup Plugin recognizes the following options:
 | ------------| ---- | ------------- | ----------- |
 | verboseOutput | Boolean | `false` | If set to `true` then the plugin writes more information to the console. |
 | filterCDWarning | Boolean | `false` | If set to `true` then the plugin filters "Circular dependency" warnings. | 
+| filterPureWarning | Boolean | `false` | If set to `true` then the plugin filters warnings about `/*#__PURE__*/` annotations tha rollup cannot handle.  | 
 
 
 <sub>_End Of Document_</sub>

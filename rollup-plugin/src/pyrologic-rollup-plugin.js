@@ -5,6 +5,7 @@ class PyrologicRollupPlugin {
         this.fcount = 0;
         this.verboseOutput = false;
         this.filterCDWarning = false;
+        this.filterPureWarning = false;
     }
 
     static getInstance() {
@@ -18,7 +19,7 @@ class PyrologicRollupPlugin {
 
     infoBuildEnd() {
         const wc = this.wcount;
-        const ft = (this.verboseOutput && this.filterCDWarning) ? ` (${this.fcount} warnings filtered out.)` : '';
+        const ft = (this.verboseOutput && (this.filterCDWarning || this.filterPureWarning)) ? ` (${this.fcount} warnings filtered out.)` : '';
         if ( wc > 0 ) {
             console.log('\x1b[33m%s\x1b[0m', `Build ended with ${wc} warnings!${ft}`);
         } else {
@@ -45,6 +46,7 @@ class PyrologicRollupPlugin {
         const opts = options || {};
         this.verboseOutput = !!opts.verboseOutput;
         this.filterCDWarning = !!opts.filterCDWarning;
+        this.filterPureWarning = !!opts.filterPureWarning;
         const self = this;
         return {
             name: 'pyrologic-info-plugin',
@@ -68,10 +70,12 @@ class PyrologicRollupPlugin {
     }
 
     onwarn ( { loc, frame, message } ) {
-        if ( this.filterCDWarning ) {
+        if ( this.filterCDWarning || this.filterPureWarning ) {
             if ( (typeof message === 'string') && (message.length > 0) ) {
                 const mup = message.toUpperCase();
-                if ( mup.includes('CIRCULAR') && mup.includes('DEPENDENCY') ) {
+                const cd = this.filterCDWarning;
+                const pure = this.filterPureWarning;
+                if ( cd && mup.includes('CIRCULAR') && mup.includes('DEPENDENCY') || pure && mup.includes('__PURE__') ) {
                     // ignore!
                     ++this.fcount;
                     return;
