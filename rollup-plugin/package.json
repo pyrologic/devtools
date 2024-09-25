@@ -7,7 +7,7 @@
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pyrologic/devtools.git"
+    "url": "git+https://github.com/pyrologic/devtools.git"
   },
   "scripts": {
     "build": "rollup --config rollup.config.mjs",
